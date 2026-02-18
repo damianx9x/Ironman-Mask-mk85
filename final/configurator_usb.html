@@ -1,0 +1,834 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JARVIS Mask Console</title>
+  <style>
+    :root {
+      --jarvis-bg: #030910;
+      --jarvis-bg-2: #071423;
+      --jarvis-panel: #071625cc;
+      --jarvis-edge: #1f6fa2;
+      --jarvis-line: #0f2d45;
+      --jarvis-text: #d6f2ff;
+      --jarvis-muted: #7ea8c4;
+      --jarvis-cyan: #39d8ff;
+      --jarvis-cyan-soft: #1fa4ce;
+      --jarvis-gold: #ffba62;
+      --jarvis-good: #63ffb4;
+      --jarvis-bad: #ff5f85;
+      --jarvis-shadow: 0 0 0.5rem #1ca8d355, 0 0 1.2rem #0f6d9a44;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Rajdhani", "Exo 2", "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      color: var(--jarvis-text);
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 20% 0%, #0a38595e 0, transparent 40%),
+        radial-gradient(circle at 80% 0%, #5f310e42 0, transparent 28%),
+        linear-gradient(180deg, var(--jarvis-bg-2), var(--jarvis-bg));
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(var(--jarvis-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--jarvis-line) 1px, transparent 1px);
+      background-size: 32px 32px;
+      opacity: 0.25;
+      mask-image: radial-gradient(circle at center, black 30%, transparent 90%);
+    }
+
+    .wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 18px 14px 26px;
+    }
+
+    .header {
+      border: 1px solid var(--jarvis-edge);
+      border-radius: 16px;
+      background:
+        linear-gradient(135deg, #081a2a, #07111d),
+        repeating-linear-gradient(120deg, #0a21332e 0 8px, #09253b2e 8px 16px);
+      box-shadow: var(--jarvis-shadow);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .title {
+      margin: 0;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      font-size: 24px;
+      color: #e2f8ff;
+      text-shadow: 0 0 10px #2cb2da55;
+    }
+
+    .subtitle {
+      margin: 2px 0 0;
+      font-size: 13px;
+      color: var(--jarvis-muted);
+    }
+
+    .status {
+      font-size: 13px;
+      color: var(--jarvis-muted);
+      margin: 0;
+      padding: 8px 12px;
+      border: 1px solid #1c567c;
+      border-radius: 999px;
+      background: #09192ac7;
+    }
+
+    .status b.ok { color: var(--jarvis-good); }
+    .status b.err { color: var(--jarvis-bad); }
+
+    .row {
+      display: grid;
+      grid-template-columns: 8fr 4fr;
+      gap: 12px;
+    }
+
+    .panel {
+      border: 1px solid var(--jarvis-edge);
+      border-radius: 14px;
+      padding: 12px;
+      background: var(--jarvis-panel);
+      box-shadow: inset 0 0 0 1px #0f335088, 0 0 20px #0a3d5e3a;
+      backdrop-filter: blur(3px);
+    }
+
+    .panel h2 {
+      margin: 0 0 10px;
+      color: #dff6ff;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-size: 14px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      border: 1px solid #2c6f99;
+      background: linear-gradient(180deg, #0f3149, #0a2537);
+      color: var(--jarvis-text);
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    button:hover {
+      border-color: var(--jarvis-cyan);
+      transform: translateY(-1px);
+      box-shadow: 0 0 10px #2ec5f966;
+    }
+
+    .btn-main {
+      border-color: #4a93be;
+      background: linear-gradient(180deg, #17496a, #10384f);
+    }
+
+    .btn-gold {
+      border-color: #b87c3f;
+      background: linear-gradient(180deg, #704322, #502f19);
+      color: #ffe5c8;
+    }
+
+    .switch-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 13px;
+      color: #bcd7ec;
+    }
+
+    .switch-row label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 8px;
+      border: 1px solid #204f72;
+      border-radius: 8px;
+      background: #0b2133aa;
+    }
+
+    .groups {
+      display: grid;
+      gap: 10px;
+    }
+
+    .group {
+      border: 1px solid #1a4b6f;
+      border-radius: 12px;
+      padding: 10px;
+      background: linear-gradient(180deg, #081927ea, #08131ecf);
+    }
+
+    .group h3 {
+      margin: 0 0 8px;
+      font-size: 13px;
+      letter-spacing: 0.8px;
+      color: #ace7ff;
+      text-transform: uppercase;
+    }
+
+    .field {
+      display: grid;
+      grid-template-columns: 260px 1fr 90px;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .field-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .field-label span {
+      color: #d4ebff;
+    }
+
+    .info-btn {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1px solid #4baad8;
+      background: #0d3954;
+      color: #b7ebff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 0;
+      line-height: 18px;
+    }
+
+    .info-btn:hover {
+      transform: none;
+      box-shadow: 0 0 8px #48caf066;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--jarvis-cyan);
+    }
+
+    input[type="number"],
+    input[type="text"] {
+      width: 100%;
+      border: 1px solid #2d688f;
+      border-radius: 8px;
+      background: #07131f;
+      color: var(--jarvis-text);
+      padding: 7px 8px;
+    }
+
+    .field-value {
+      color: #a8d7f0;
+      font-size: 12px;
+      text-align: right;
+    }
+
+    .log {
+      background: #070f18;
+      border: 1px solid #1e5477;
+      border-radius: 10px;
+      min-height: 270px;
+      max-height: 400px;
+      overflow: auto;
+      padding: 8px;
+      font-size: 12px;
+      line-height: 1.35;
+      white-space: pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: #b8def6;
+    }
+
+    .tiny {
+      color: var(--jarvis-muted);
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    .hud-card {
+      margin-top: 12px;
+      border: 1px solid #2f7297;
+      border-radius: 10px;
+      background: linear-gradient(180deg, #071220, #050d17);
+      padding: 8px;
+      box-shadow: inset 0 0 0 1px #0f2d45;
+    }
+
+    .hud-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+      border: 1px solid #1d526f;
+      box-shadow: 0 0 14px #21b8ea33;
+    }
+
+    .popup-backdrop {
+      position: fixed;
+      inset: 0;
+      background: #02070db5;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 14px;
+    }
+
+    .popup-backdrop.active {
+      display: flex;
+    }
+
+    .popup {
+      width: min(560px, 96vw);
+      border: 1px solid #3f8eb8;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #0b2031, #081520);
+      box-shadow: 0 0 22px #1ea9da55;
+      padding: 14px;
+    }
+
+    .popup h4 {
+      margin: 0 0 8px;
+      color: #dff5ff;
+      font-size: 17px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .popup p {
+      margin: 0;
+      color: #b9d7eb;
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .popup .toolbar {
+      margin-top: 12px;
+      margin-bottom: 0;
+      justify-content: flex-end;
+    }
+
+    @media (max-width: 1080px) {
+      .row { grid-template-columns: 1fr; }
+      .field { grid-template-columns: 1fr; }
+      .field-value { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="header">
+      <div>
+        <h1 class="title">JARVIS MASK CONSOLE</h1>
+        <p class="subtitle">Live USB tuning (Web Serial) dla Twojej maski. Przeglądarka: Chrome/Edge.</p>
+      </div>
+      <p class="status" id="status">Stan: <b class="err">rozłączono</b></p>
+    </section>
+
+    <div class="row">
+      <section class="panel">
+        <h2>Parametry</h2>
+        <div class="toolbar">
+          <button class="btn-main" id="btn-connect">Połącz USB</button>
+          <button id="btn-fetch">Pobierz z płytki</button>
+          <button id="btn-send-all">Wyślij wszystko</button>
+          <button id="btn-safe">Preset Safe Servo</button>
+          <button class="btn-gold" id="btn-trigger-demo">Odpal Demo Sequence</button>
+          <button id="btn-clear-log">Wyczyść log</button>
+        </div>
+
+        <div class="switch-row">
+          <label><input type="checkbox" id="auto-send" checked> Auto-send przy zmianie</label>
+          <label><input type="checkbox" id="servo-paired" checked> Paruj asymetrycznie HIGH<->LOW (S1_OPEN<->S2_CLOSE, S1_CLOSE<->S2_OPEN)</label>
+        </div>
+
+        <div class="groups" id="groups"></div>
+      </section>
+
+      <aside class="panel">
+        <h2>Sterowanie</h2>
+        <div class="toolbar">
+          <button id="btn-tune-on">Tuning ON</button>
+          <button id="btn-tune-off">Tuning OFF</button>
+          <button id="btn-play-startup">Test startup.wav</button>
+        </div>
+        <p class="tiny">Zmiany przez USB działają w RAM (do restartu). Po strojeniu wpisz finalne wartości do <code>config.py</code>.</p>
+
+        <h2 style="margin-top:14px;">Log Serial</h2>
+        <div class="log" id="log"></div>
+        <div class="hud-card">
+          <img src="./assets/jarvis_hud.svg" alt="Jarvis inspired HUD visual">
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="popup-backdrop" id="popup-backdrop" aria-hidden="true">
+    <div class="popup" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+      <h4 id="popup-title"></h4>
+      <p id="popup-body"></p>
+      <div class="toolbar">
+        <button id="popup-close">Zamknij</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const groups = [
+      {
+        title: "Serwa",
+        items: [
+          { key: "S1_OPEN", label: "S1 OPEN", kind: "int", mode: "range", min: 0, max: 180, step: 1, desc: "Pozycja otwarcia lewego serwa. W parowaniu liczy automatycznie S2_CLOSE." },
+          { key: "S2_OPEN", label: "S2 OPEN", kind: "int", mode: "range", min: 0, max: 180, step: 1, desc: "Pozycja otwarcia prawego serwa. W trybie parowanym wyliczana z S1_CLOSE." },
+          { key: "S1_CLOSE", label: "S1 CLOSE", kind: "int", mode: "range", min: 0, max: 180, step: 1, desc: "Pozycja zamkniecia lewego serwa. W parowaniu liczy automatycznie S2_OPEN." },
+          { key: "S2_CLOSE", label: "S2 CLOSE", kind: "int", mode: "range", min: 0, max: 180, step: 1, desc: "Pozycja zamkniecia prawego serwa. W trybie parowanym wyliczana z S1_OPEN." },
+          { key: "SERVO_PAIR_SUM", label: "SERVO_PAIR_SUM", kind: "int", mode: "number", min: 30, max: 240, step: 1, desc: "Suma par lustrzanych: S1_OPEN+S2_CLOSE i S1_CLOSE+S2_OPEN. Przy mechanice 0/90 ustaw 90 (np. 0 + 90)." },
+          { key: "OPEN_REDUCTION_DEG", label: "Open reduction [deg]", kind: "int", mode: "number", min: 0, max: 30, step: 1, desc: "Zmniejsza maksymalne otwarcie, żeby oszczędzać mechanikę." },
+          { key: "SERVO_MAX_SPEED_DPS", label: "Max speed [deg/s]", kind: "float", mode: "number", min: 10, max: 120, step: 1, desc: "Maksymalna prędkość ruchu serw. Niżej = bezpieczniej i mniej prądu." },
+          { key: "SERVO_OPEN_SPEED_MULT", label: "Open speed mult", kind: "float", mode: "number", min: 0.5, max: 2.5, step: 0.01, desc: "Mnoznik predkosci tylko dla podnoszenia maski." },
+          { key: "SERVO_CLOSE_SPEED_MULT", label: "Close speed mult", kind: "float", mode: "number", min: 0.5, max: 2.5, step: 0.01, desc: "Mnoznik predkosci tylko dla zamykania maski." },
+          { key: "SERVO_OPEN_FAST_EASE", label: "Open fast ease", kind: "bool", mode: "checkbox", desc: "Szybszy profil startu ruchu przy podnoszeniu (mniej efektu \"braku sily\")." },
+          { key: "SERVO_UPDATE_DELAY", label: "Update delay [s]", kind: "float", mode: "number", min: 0.005, max: 0.08, step: 0.001, desc: "Jak często podawane są kolejne kroki ruchu serwa." },
+          { key: "SERVO_SETTLE_TIME", label: "Settle time [s]", kind: "float", mode: "number", min: 0.05, max: 1.0, step: 0.01, desc: "Czas stabilizacji po dojechaniu do pozycji." },
+          { key: "SERVO_RELEASE_AFTER_CLOSE", label: "Release after close", kind: "bool", mode: "checkbox", desc: "Odpuszcza trzymanie serw po zamknięciu, by ograniczyć grzanie i pobór." },
+          { key: "SERVO_RELEASE_DELAY", label: "Release delay [s]", kind: "float", mode: "number", min: 0.05, max: 2.0, step: 0.01, desc: "Ile czekać po zamknięciu przed odpuszczeniem serw." }
+        ]
+      },
+      {
+        title: "Laser",
+        items: [
+          { key: "LASER_DIST_LIMIT", label: "Dist limit [mm]", kind: "int", mode: "number", min: 80, max: 800, step: 1, desc: "Maksymalny dystans wykrycia obiektu." },
+          { key: "LASER_MIN_VALID_MM", label: "Min valid [mm]", kind: "int", mode: "number", min: 10, max: 150, step: 1, desc: "Odfiltrowanie śmieciowych odczytów blisko sensora." },
+          { key: "LASER_DEBOUNCE", label: "Debounce count", kind: "int", mode: "number", min: 1, max: 10, step: 1, desc: "Ile kolejnych trafień potrzeba, aby uznać wykrycie." },
+          { key: "LASER_HOLD_TIME", label: "Hold time [s]", kind: "float", mode: "number", min: 0.05, max: 3.0, step: 0.01, desc: "Jak długo obiekt musi być obecny, żeby otworzyć maskę." },
+          { key: "LASER_FILTER_ALPHA", label: "Filter alpha", kind: "float", mode: "number", min: 0.05, max: 1.0, step: 0.01, desc: "Wygładzenie odczytu odległości (LED/HUD i stabilność)." },
+          { key: "LASER_TIMING_BUDGET_US", label: "Timing budget [us]", kind: "int", mode: "number", min: 20000, max: 200000, step: 1000, desc: "Czas pojedynczego pomiaru VL53L0X. Więcej = stabilniej, mniej = szybciej." }
+        ]
+      },
+      {
+        title: "LED + Oczy",
+        items: [
+          { key: "EYE_MAX_BRIGHT", label: "Eye brightness", kind: "float", mode: "number", min: 0.0, max: 1.0, step: 0.01, desc: "Maksymalna jasność oczu." },
+          { key: "ANIMATION_MODE", label: "Animation mode", kind: "int", mode: "number", min: 1, max: 10, step: 1, desc: "Tryb animacji LED w stanie spoczynku." },
+          { key: "LED_UPDATE_DELAY", label: "LED update delay [s]", kind: "float", mode: "number", min: 0.005, max: 0.1, step: 0.001, desc: "Częstotliwość odświeżania animacji LED." },
+          { key: "AUTO_CLOSE_DELAY", label: "Auto close delay [s]", kind: "float", mode: "number", min: 0.5, max: 20, step: 0.1, desc: "Po jakim czasie bez obiektu maska zamknie się automatycznie." },
+          { key: "NUM_LEDS_DOME", label: "LED dome count", kind: "int", mode: "number", min: 1, max: 120, step: 1, desc: "Liczba diod w kopule." },
+          { key: "NUM_LEDS_JAW", label: "LED jaw count", kind: "int", mode: "number", min: 1, max: 120, step: 1, desc: "Liczba diod w szczęce." }
+        ]
+      },
+      {
+        title: "Przycisk + Demo",
+        items: [
+          { key: "START_OPEN", label: "Start open", kind: "bool", mode: "checkbox", desc: "Stan maski po starcie. OFF = start zamkniety (bezpieczniej, mniej ruchu na boot)." },
+          { key: "JAW_SENSE_ENABLED", label: "Jaw sense enabled", kind: "bool", mode: "checkbox", desc: "Wlaczenie wykrywania szczeki na D10." },
+          { key: "JAW_DETACH_ACTIVE_LEVEL", label: "Jaw active level high", kind: "bool", mode: "checkbox", desc: "ON: stan wysoki oznacza odpiecie szczeki. OFF: logika odwrotna." },
+          { key: "JAW_DETACH_DEBOUNCE", label: "Jaw debounce [s]", kind: "float", mode: "number", min: 0.0, max: 2, step: 0.01, desc: "Filtr drgan/stabilizacji sygnalu czujnika szczeki." },
+          { key: "BUTTON_COOLDOWN", label: "Button cooldown [s]", kind: "float", mode: "number", min: 0.2, max: 8, step: 0.1, desc: "Blokada kolejnego toggle po otwarciu." },
+          { key: "MULTI_CLICK_WINDOW", label: "Multi-click window [s]", kind: "float", mode: "number", min: 0.1, max: 2, step: 0.01, desc: "Okno czasowe rozpoznania szybkich kliknięć." },
+          { key: "SINGLE_CLICK_DECISION_DELAY", label: "Single-click delay [s]", kind: "float", mode: "number", min: 0.05, max: 2, step: 0.01, desc: "Krótka zwłoka na rozstrzygnięcie single vs multi click." },
+          { key: "TRIPLE_CLICK_COUNT", label: "Triple click count", kind: "int", mode: "number", min: 2, max: 6, step: 1, desc: "Liczba kliknięć uruchamiająca demo." },
+          { key: "DEMO_FX_DURATION", label: "Demo FX duration [s]", kind: "float", mode: "number", min: 0.3, max: 15, step: 0.1, desc: "Czas efektu LED przy krótkim demo FX." },
+          { key: "DEMO_STAGE_IGNITION", label: "Demo ignition [s]", kind: "float", mode: "number", min: 0.5, max: 8, step: 0.1, desc: "Faza zapłonu demo-sequence (oczy + LED)." },
+          { key: "DEMO_STAGE_OPEN_HOLD", label: "Demo open hold [s]", kind: "float", mode: "number", min: 0.5, max: 10, step: 0.1, desc: "Jak długo trzymać maskę otwartą w sekwencji demo." },
+          { key: "DEMO_STAGE_CLOSE_HOLD", label: "Demo close hold [s]", kind: "float", mode: "number", min: 0.5, max: 10, step: 0.1, desc: "Jak długo trzymać maskę zamkniętą w sekwencji demo." },
+          { key: "DEMO_STAGE_ARC", label: "Demo arc burst [s]", kind: "float", mode: "number", min: 0.5, max: 10, step: 0.1, desc: "Energetyczna faza błysków i pulsu oczu." },
+          { key: "DEMO_STAGE_FINAL_HOLD", label: "Demo final hold [s]", kind: "float", mode: "number", min: 0.5, max: 10, step: 0.1, desc: "Końcowe podtrzymanie przed wygaszeniem demo." },
+          { key: "DEMO_EYE_PULSE_MIN", label: "Demo eye min", kind: "float", mode: "number", min: 0.0, max: 1.0, step: 0.01, desc: "Minimalna jasność oczu w pulsie demo." },
+          { key: "RUNTIME_DIAG_ENABLED", label: "Runtime diag enabled", kind: "bool", mode: "checkbox", desc: "Wysyła log diagnostyczny na serial." },
+          { key: "RUNTIME_DIAG_INTERVAL", label: "Runtime diag interval [s]", kind: "float", mode: "number", min: 0.2, max: 30, step: 0.1, desc: "Interwał logów diagnostycznych." }
+        ]
+      }
+    ];
+
+    const defaults = {
+      S1_OPEN: 160, S2_OPEN: 20, S1_CLOSE: 20, S2_CLOSE: 160,
+      SERVO_PAIR_SUM: 180, OPEN_REDUCTION_DEG: 2,
+      SERVO_MAX_SPEED_DPS: 78.0, SERVO_OPEN_SPEED_MULT: 1.35, SERVO_CLOSE_SPEED_MULT: 1.0, SERVO_OPEN_FAST_EASE: true,
+      SERVO_UPDATE_DELAY: 0.012, SERVO_SETTLE_TIME: 0.12,
+      SERVO_RELEASE_AFTER_CLOSE: true, SERVO_RELEASE_DELAY: 0.20,
+      LASER_DIST_LIMIT: 250, LASER_MIN_VALID_MM: 40, LASER_DEBOUNCE: 3,
+      LASER_HOLD_TIME: 0.35, LASER_FILTER_ALPHA: 0.40, LASER_TIMING_BUDGET_US: 50000,
+      EYE_MAX_BRIGHT: 1.0, ANIMATION_MODE: 1, LED_UPDATE_DELAY: 0.03, AUTO_CLOSE_DELAY: 5.0,
+      NUM_LEDS_DOME: 15, NUM_LEDS_JAW: 8,
+      START_OPEN: false, JAW_SENSE_ENABLED: false, JAW_DETACH_ACTIVE_LEVEL: false, JAW_DETACH_DEBOUNCE: 0.60,
+      BUTTON_COOLDOWN: 2.0, MULTI_CLICK_WINDOW: 0.55, SINGLE_CLICK_DECISION_DELAY: 0.30,
+      TRIPLE_CLICK_COUNT: 3, DEMO_FX_DURATION: 4.0,
+      DEMO_STAGE_IGNITION: 1.8, DEMO_STAGE_OPEN_HOLD: 2.8, DEMO_STAGE_CLOSE_HOLD: 2.2,
+      DEMO_STAGE_ARC: 2.4, DEMO_STAGE_FINAL_HOLD: 2.6, DEMO_EYE_PULSE_MIN: 0.08,
+      RUNTIME_DIAG_ENABLED: true, RUNTIME_DIAG_INTERVAL: 2.0
+    };
+
+    const state = { ...defaults };
+    const controls = {};
+    const keyList = Object.keys(defaults);
+    const pairMap = {
+      S1_OPEN: "S2_CLOSE",
+      S2_CLOSE: "S1_OPEN",
+      S1_CLOSE: "S2_OPEN",
+      S2_OPEN: "S1_CLOSE"
+    };
+
+    const statusEl = document.getElementById("status");
+    const logEl = document.getElementById("log");
+    const autoSendEl = document.getElementById("auto-send");
+    const groupsRoot = document.getElementById("groups");
+    const servoPairedEl = document.getElementById("servo-paired");
+    const popupBackdrop = document.getElementById("popup-backdrop");
+    const popupTitle = document.getElementById("popup-title");
+    const popupBody = document.getElementById("popup-body");
+
+    let port;
+    let reader;
+    let writer;
+    let readBuffer = "";
+    let connected = false;
+
+    function setStatus(ok, text) {
+      statusEl.innerHTML = `Stan: <b class="${ok ? "ok" : "err"}">${text}</b>`;
+    }
+
+    function logLine(msg) {
+      const ts = new Date().toLocaleTimeString();
+      logEl.textContent += `[${ts}] ${msg}\n`;
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    function showPopup(title, body) {
+      popupTitle.textContent = title;
+      popupBody.textContent = body;
+      popupBackdrop.classList.add("active");
+    }
+
+    function hidePopup() {
+      popupBackdrop.classList.remove("active");
+    }
+
+    function castValue(field, raw) {
+      if (field.kind === "bool") return !!raw;
+      if (field.kind === "int") return parseInt(raw, 10);
+      if (field.kind === "float") return parseFloat(raw);
+      return String(raw);
+    }
+
+    function clampByField(field, value) {
+      let v = value;
+      if (typeof v === "number") {
+        if (Number.isFinite(field.min) && v < field.min) v = field.min;
+        if (Number.isFinite(field.max) && v > field.max) v = field.max;
+      }
+      return v;
+    }
+
+    function refreshFieldValue(key) {
+      const c = controls[key];
+      if (!c) return;
+      if (c.field.kind === "bool") {
+        c.input.checked = !!state[key];
+        c.value.textContent = state[key] ? "ON" : "OFF";
+      } else {
+        c.input.value = state[key];
+        c.value.textContent = String(state[key]);
+      }
+    }
+
+    function setServoPairUI() {
+      const paired = servoPairedEl.checked;
+      ["S2_OPEN", "S2_CLOSE"].forEach((k) => {
+        if (!controls[k]) return;
+        controls[k].input.disabled = paired;
+        controls[k].input.style.opacity = paired ? "0.55" : "1";
+        controls[k].input.style.transform = paired ? "scaleX(-1)" : "none";
+      });
+    }
+
+    async function syncServoPairFromS1(sendUpdates, logSync = false) {
+      if (!servoPairedEl.checked) return;
+      const sum = parseInt(state.SERVO_PAIR_SUM, 10);
+      const pairs = [
+        ["S1_OPEN", "S2_CLOSE"],
+        ["S1_CLOSE", "S2_OPEN"]
+      ];
+
+      for (const [leftKey, rightKey] of pairs) {
+        const rightField = controls[rightKey].field;
+        const rawRight = sum - parseInt(state[leftKey], 10);
+        state[rightKey] = clampByField(rightField, rawRight);
+        refreshFieldValue(rightKey);
+        if (logSync) {
+          logLine(`[PAIR] ${leftKey}=${state[leftKey]} => ${rightKey}=${state[rightKey]} (HIGH<->LOW, sum=${sum})`);
+        }
+        if (sendUpdates && autoSendEl.checked && connected) {
+          await sendSetConfig(rightKey, state[rightKey]);
+        }
+      }
+    }
+
+    async function applyServoPair(changedKey) {
+      if (!servoPairedEl.checked) return;
+      if (changedKey === "SERVO_PAIR_SUM") {
+        await syncServoPairFromS1(true);
+        return;
+      }
+      if (!(changedKey in pairMap)) return;
+
+      const mateKey = pairMap[changedKey];
+      const sum = parseInt(state.SERVO_PAIR_SUM, 10);
+      const rawMate = sum - parseInt(state[changedKey], 10);
+      const mateField = controls[mateKey].field;
+      state[mateKey] = clampByField(mateField, rawMate);
+      refreshFieldValue(mateKey);
+      logLine(`[PAIR] ${changedKey}=${state[changedKey]} => ${mateKey}=${state[mateKey]} (HIGH<->LOW, sum=${sum})`);
+
+      if (autoSendEl.checked && connected) {
+        await sendSetConfig(mateKey, state[mateKey]);
+      }
+    }
+
+    function renderFields() {
+      groupsRoot.innerHTML = "";
+
+      groups.forEach((group) => {
+        const card = document.createElement("section");
+        card.className = "group";
+        const h = document.createElement("h3");
+        h.textContent = group.title;
+        card.appendChild(h);
+
+        group.items.forEach((field) => {
+          const row = document.createElement("div");
+          row.className = "field";
+
+          const labelWrap = document.createElement("div");
+          labelWrap.className = "field-label";
+          const label = document.createElement("span");
+          label.textContent = field.label;
+
+          const info = document.createElement("button");
+          info.className = "info-btn";
+          info.type = "button";
+          info.textContent = "?";
+          info.title = "Opis parametru";
+          info.addEventListener("click", () => showPopup(field.label, field.desc || "Brak opisu"));
+
+          labelWrap.appendChild(label);
+          labelWrap.appendChild(info);
+
+          let input;
+          if (field.mode === "checkbox") {
+            input = document.createElement("input");
+            input.type = "checkbox";
+          } else {
+            input = document.createElement("input");
+            input.type = field.mode === "range" ? "range" : "number";
+            input.min = field.min;
+            input.max = field.max;
+            input.step = field.step;
+          }
+
+          const valueBox = document.createElement("div");
+          valueBox.className = "field-value";
+
+          controls[field.key] = { field, input, value: valueBox };
+          refreshFieldValue(field.key);
+
+          const onChange = async () => {
+            const value = field.kind === "bool" ? input.checked : castValue(field, input.value);
+            state[field.key] = clampByField(field, value);
+            refreshFieldValue(field.key);
+
+            if (autoSendEl.checked && connected) {
+              await sendSetConfig(field.key, state[field.key]);
+            }
+
+            await applyServoPair(field.key);
+          };
+
+          input.addEventListener("input", onChange);
+          input.addEventListener("change", onChange);
+
+          row.appendChild(labelWrap);
+          row.appendChild(input);
+          row.appendChild(valueBox);
+          card.appendChild(row);
+        });
+
+        groupsRoot.appendChild(card);
+      });
+
+      setServoPairUI();
+    }
+
+    async function sendJson(obj) {
+      if (!connected || !writer) {
+        logLine("Brak połączenia USB.");
+        return;
+      }
+      const data = JSON.stringify(obj) + "\n";
+      await writer.write(new TextEncoder().encode(data));
+      logLine(">> " + JSON.stringify(obj));
+    }
+
+    async function sendSetConfig(key, value) {
+      await sendJson({ cmd: "set_config", key, value });
+    }
+
+    async function sendAll() {
+      for (const key of keyList) {
+        await sendSetConfig(key, state[key]);
+        await new Promise((r) => setTimeout(r, 7));
+      }
+    }
+
+    function applyConfig(data) {
+      Object.keys(data).forEach((key) => {
+        if (key in state) {
+          state[key] = data[key];
+          refreshFieldValue(key);
+        }
+      });
+      setServoPairUI();
+      syncServoPairFromS1(false);
+    }
+
+    function parseLine(line) {
+      logLine("<< " + line);
+      try {
+        const msg = JSON.parse(line);
+        if (msg.type === "config" && msg.data) {
+          applyConfig(msg.data);
+        }
+      } catch (_) {
+        // Ignore non-JSON lines.
+      }
+    }
+
+    async function startReadLoop() {
+      while (connected && reader) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        readBuffer += new TextDecoder().decode(value);
+        let idx;
+        while ((idx = readBuffer.indexOf("\n")) >= 0) {
+          const line = readBuffer.slice(0, idx).trim();
+          readBuffer = readBuffer.slice(idx + 1);
+          if (line) parseLine(line);
+        }
+      }
+    }
+
+    async function connectSerial() {
+      if (!("serial" in navigator)) {
+        alert("Ta przeglądarka nie obsługuje Web Serial. Użyj Chrome/Edge.");
+        return;
+      }
+
+      try {
+        port = await navigator.serial.requestPort();
+        await port.open({ baudRate: 115200 });
+        writer = port.writable.getWriter();
+        reader = port.readable.getReader();
+        connected = true;
+        setStatus(true, "połączono");
+        logLine("Połączono z portem.");
+        startReadLoop();
+        await sendJson({ cmd: "connect" });
+      } catch (err) {
+        setStatus(false, "błąd połączenia");
+        logLine("Błąd połączenia: " + err.message);
+      }
+    }
+
+    document.getElementById("btn-connect").addEventListener("click", connectSerial);
+    document.getElementById("btn-fetch").addEventListener("click", () => sendJson({ cmd: "get_config", keys: keyList }));
+    document.getElementById("btn-send-all").addEventListener("click", sendAll);
+    document.getElementById("btn-play-startup").addEventListener("click", () => sendJson({ cmd: "play_sound", file: "startup.wav" }));
+    document.getElementById("btn-tune-on").addEventListener("click", () => sendJson({ cmd: "set_tuning_mode", value: true }));
+    document.getElementById("btn-tune-off").addEventListener("click", () => sendJson({ cmd: "set_tuning_mode", value: false }));
+    document.getElementById("btn-clear-log").addEventListener("click", () => { logEl.textContent = ""; });
+    document.getElementById("btn-trigger-demo").addEventListener("click", () => sendJson({ cmd: "trigger_demo" }));
+
+    document.getElementById("btn-safe").addEventListener("click", async () => {
+      state.SERVO_MAX_SPEED_DPS = 65;
+      state.SERVO_OPEN_SPEED_MULT = 1.25;
+      state.SERVO_CLOSE_SPEED_MULT = 0.95;
+      state.SERVO_OPEN_FAST_EASE = true;
+      state.SERVO_UPDATE_DELAY = 0.014;
+      state.SERVO_SETTLE_TIME = 0.14;
+      state.SERVO_RELEASE_DELAY = 0.22;
+      state.BUTTON_COOLDOWN = 2.2;
+      [
+        "SERVO_MAX_SPEED_DPS",
+        "SERVO_OPEN_SPEED_MULT",
+        "SERVO_CLOSE_SPEED_MULT",
+        "SERVO_OPEN_FAST_EASE",
+        "SERVO_UPDATE_DELAY",
+        "SERVO_SETTLE_TIME",
+        "SERVO_RELEASE_DELAY",
+        "BUTTON_COOLDOWN"
+      ].forEach(refreshFieldValue);
+
+      if (connected) {
+        await sendSetConfig("SERVO_MAX_SPEED_DPS", state.SERVO_MAX_SPEED_DPS);
+        await sendSetConfig("SERVO_OPEN_SPEED_MULT", state.SERVO_OPEN_SPEED_MULT);
+        await sendSetConfig("SERVO_CLOSE_SPEED_MULT", state.SERVO_CLOSE_SPEED_MULT);
+        await sendSetConfig("SERVO_OPEN_FAST_EASE", state.SERVO_OPEN_FAST_EASE);
+        await sendSetConfig("SERVO_UPDATE_DELAY", state.SERVO_UPDATE_DELAY);
+        await sendSetConfig("SERVO_SETTLE_TIME", state.SERVO_SETTLE_TIME);
+        await sendSetConfig("SERVO_RELEASE_DELAY", state.SERVO_RELEASE_DELAY);
+        await sendSetConfig("BUTTON_COOLDOWN", state.BUTTON_COOLDOWN);
+      }
+    });
+
+    servoPairedEl.addEventListener("change", async () => {
+      setServoPairUI();
+      if (servoPairedEl.checked) {
+        await syncServoPairFromS1(true, true);
+      } else {
+        logLine("[PAIR] Parowanie OFF (edycja niezalezna serw)");
+      }
+    });
+
+    document.getElementById("popup-close").addEventListener("click", hidePopup);
+    popupBackdrop.addEventListener("click", (e) => {
+      if (e.target === popupBackdrop) hidePopup();
+    });
+
+    renderFields();
+    setStatus(false, "rozłączono");
+  </script>
+</body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>J.A.R.V.I.S. - MARK LXXXV</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap');
+
+        body {
+            background-color: #020202;
+            color: #00ffff;
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-image: 
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)),
+                radial-gradient(circle at 50% 0%, #003333 0%, #000000 70%);
+            background-size: 100% 2px, 3px 100%, 100% 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Efekt skanowania (Scanline) */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(to bottom, rgba(0,255,255,0), rgba(0,255,255,0.1) 50%, rgba(0,255,255,0));
+            background-size: 100% 100%;
+            animation: scanline 8s linear infinite;
+            pointer-events: none;
+            z-index: 999;
+        }
+        @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+
+        h1 { 
+            text-transform: uppercase; 
+            letter-spacing: 10px; 
+            border-bottom: 2px solid rgba(0, 255, 255, 0.5); 
+            padding-bottom: 10px; 
+            text-shadow: 0 0 10px #00ffff;
+            font-size: 42px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        h1::after {
+            content: "SYSTEM ONLINE";
+            display: block;
+            font-size: 14px;
+            letter-spacing: 5px;
+            color: #ffaa00;
+            margin-top: 5px;
+            text-align: right;
+            animation: blink 2s infinite;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+            width: 100%;
+            max-width: 1400px;
+            margin-top: 40px;
+        }
+
+        .panel {
+            background: rgba(5, 10, 15, 0.85);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            padding: 25px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.05), inset 0 0 30px rgba(0, 255, 255, 0.05);
+            position: relative;
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
+        }
+        .panel:hover { box-shadow: 0 0 30px rgba(0, 255, 255, 0.15), inset 0 0 30px rgba(0, 255, 255, 0.1); border-color: rgba(0, 255, 255, 0.5); }
+        
+        /* Narożniki HUD */
+        .panel::before {
+            content: ''; position: absolute; top: -2px; left: -2px; width: 20px; height: 20px; 
+            border-top: 3px solid #00ffff; border-left: 3px solid #00ffff;
+        }
+        .panel::after {
+            content: ''; position: absolute; bottom: -2px; right: -2px; width: 20px; height: 20px; 
+            border-bottom: 3px solid #00ffff; border-right: 3px solid #00ffff;
+        }
+
+        .panel h2 { 
+            margin-top: 0; color: #ffaa00; font-size: 22px; text-transform: uppercase; letter-spacing: 3px; 
+            border-bottom: 1px solid rgba(255, 170, 0, 0.3); padding-bottom: 10px; 
+            display: flex; justify-content: space-between;
+        }
+        .panel h2 span { font-size: 12px; color: #00ffff; opacity: 0.7; align-self: center; }
+        
+        /* Suwaki */
+        .control-group { margin-bottom: 20px; }
+        label { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 8px; color: #aadddd; font-size: 14px; letter-spacing: 1px; }
+        input[type=range] { 
+            width: 100%; 
+            accent-color: #00ffff; 
+            cursor: pointer;
+            height: 4px;
+            background: rgba(0, 255, 255, 0.2);
+            outline: none;
+            appearance: none;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 15px; height: 15px; background: #00ffff; border: 2px solid #000; box-shadow: 0 0 10px #00ffff; transform: rotate(45deg);
+        }
+
+        /* Inputy tekstowe */
+        input[type=text] {
+            background: rgba(0,0,0,0.5); border: 1px solid #005555; color: #00ffff; padding: 8px; width: 100%; font-family: 'Rajdhani'; font-size: 16px; text-transform: uppercase;
+        }
+        input[type=text]:focus { border-color: #00ffff; outline: none; box-shadow: 0 0 10px rgba(0,255,255,0.2); }
+        
+        /* Przyciski */
+        button {
+            background: linear-gradient(45deg, transparent 5%, rgba(0, 255, 255, 0.1) 5%);
+            color: #fff;
+            border: 1px solid #00ffff;
+            padding: 12px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            margin: 5px;
+            font-family: 'Rajdhani';
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        button:hover { background: rgba(0, 255, 255, 0.3); box-shadow: 0 0 20px rgba(0, 255, 255, 0.4); }
+        button:active { transform: scale(0.98); }
+        
+        #connectBtn { 
+            width: 350px; padding: 20px; font-size: 24px; margin-bottom: 30px; 
+            background: rgba(0,0,0,0.8); border: 2px solid #00ffff; 
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2); 
+            animation: pulse 2s infinite; 
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+        }
+        
+        @keyframes pulse { 0% { box-shadow: 0 0 20px #00ffff; } 50% { box-shadow: 0 0 40px #00ffff; } 100% { box-shadow: 0 0 20px #00ffff; } }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Select */
+        select {
+            width: 100%; background: #050505; color: #00ffff; border: 1px solid #005555; padding: 10px; font-family: 'Rajdhani'; font-size: 18px; text-transform: uppercase;
+        }
+
+        /* Kod wynikowy */
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: rgba(0,0,0,0.8);
+            color: #00ff00;
+            border: 1px solid #005500;
+            font-family: monospace;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        
+        .status-bar { width: 100%; text-align: center; padding: 10px; color: #55aaaa; font-size: 16px; margin-bottom: 20px; letter-spacing: 2px; }
+        
+        .highlight { color: #ffaa00; }
+
+        /* Arc Reactor Loader */
+        .arc-reactor {
+            width: 80px; height: 80px; border-radius: 50%;
+            border: 4px solid #00ffff;
+            box-shadow: 0 0 20px #00ffff, inset 0 0 20px #00ffff;
+            position: relative; margin-bottom: 20px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .arc-reactor::before {
+            content: ''; position: absolute; width: 60%; height: 60%;
+            border: 2px solid #fff; border-radius: 50%;
+            border-top-color: transparent; border-bottom-color: transparent;
+            animation: spin 2s linear infinite;
+        }
+        .arc-reactor::after {
+            content: ''; width: 20%; height: 20%; background: #fff; border-radius: 50%;
+            box-shadow: 0 0 15px #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="arc-reactor"></div>
+    <h1>PROJEKT MARK LXXXV (MARK 85)</h1>
+    
+    <div class="status-bar" id="status">STATUS SYSTEMU: OFFLINE (OCZEKIWANIE NA POŁĄCZENIE)</div>
+    <button id="connectBtn">INICJALIZACJA PROTOKOŁU</button>
+
+    <div class="main-container">
+        <!-- LEWA KOLUMNA: SERWA -->
+        <div class="panel">
+            <h2>MECHANIKA <span>[SERWO]</span></h2>
+            
+            <div class="control-group">
+                <label>LEWE OTWARCIE (S1) <span id="val_S1_OPEN" class="highlight">160</span></label>
+                <input type="range" id="S1_OPEN" min="0" max="180" value="160" oninput="update(this)">
+            </div>
+            <div class="control-group">
+                <label>LEWE ZAMKNIĘCIE (S1) <span id="val_S1_CLOSE" class="highlight">20</span></label>
+                <input type="range" id="S1_CLOSE" min="0" max="180" value="20" oninput="update(this)">
+            </div>
+            <hr style="border-color: #333">
+            <div class="control-group">
+                <label>PRAWE OTWARCIE (S2) <span id="val_S2_OPEN" class="highlight">20</span></label>
+                <input type="range" id="S2_OPEN" min="0" max="180" value="20" oninput="update(this)">
+            </div>
+            <div class="control-group">
+                <label>PRAWE ZAMKNIĘCIE (S2) <span id="val_S2_CLOSE" class="highlight">160</span></label>
+                <input type="range" id="S2_CLOSE" min="0" max="180" value="160" oninput="update(this)">
+            </div>
+            
+            <div class="control-group">
+                <label>OPÓŹNIENIE RUCHU <span id="val_SERVO_SPEED_DELAY" class="highlight">0.01</span></label>
+                <input type="range" id="SERVO_SPEED_DELAY" min="0.001" max="0.05" step="0.001" value="0.01" oninput="update(this)">
+            </div>
+        </div>
+
+        <!-- ŚRODKOWA KOLUMNA: SENSORY I DŹWIĘK -->
+        <div class="panel">
+            <h2>SENSORY <span>[WEJŚCIE]</span></h2>
+            
+            <div class="control-group">
+                <label>ZASIĘG LASERA (mm) <span id="val_LASER_DIST_LIMIT" class="highlight">200</span></label>
+                <input type="range" id="LASER_DIST_LIMIT" min="50" max="2000" value="200" oninput="update(this)">
+                <small style="color:#666">Maks. 2000mm (2 Metry)</small>
+            </div>
+
+            <div class="control-group">
+                <label>PLIK DŹWIĘKOWY OTWARCIA</label>
+                <input type="text" id="SND_OPEN" value="open.wav" onchange="update(this)">
+            </div>
+            <div class="control-group">
+                <label>PLIK DŹWIĘKOWY ZAMKNIĘCIA</label>
+                <input type="text" id="SND_CLOSE" value="close.wav" onchange="update(this)">
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <button onclick="playSound(document.getElementById('SND_OPEN').value)">TEST OTWARCIA</button>
+                <button onclick="playSound(document.getElementById('SND_CLOSE').value)">TEST ZAMKNIĘCIA</button>
+            </div>
+        </div>
+
+        <!-- PRAWA KOLUMNA: EFEKTY I SHOW OFF -->
+        <div class="panel">
+            <h2>WIZUALIZACJE <span>[WYJŚCIE]</span></h2>
+            
+            <div class="control-group">
+                <label>JASNOŚĆ OCZU <span id="val_EYE_MAX_BRIGHT" class="highlight">1.0</span></label>
+                <input type="range" id="EYE_MAX_BRIGHT" min="0" max="1.0" step="0.05" value="1.0" oninput="update(this)">
+            </div>
+
+            <div class="control-group">
+                <label>ANIMACJA LED</label>
+                <select id="ANIMATION_MODE" onchange="update(this)">
+                    <option value="1">1. STAŁY (Klasyk)</option>
+                    <option value="2">2. ODDYCHANIE (Domyślny)</option>
+                    <option value="3">3. SKANER (Cylon)</option>
+                    <option value="4">4. TĘCZA (Pętla)</option>
+                    <option value="5">5. STROBOSKOP (Alarm)</option>
+                    <option value="6">6. ISKRY</option>
+                    <option value="7">7. SYGNALIZACJA</option>
+                    <option value="8">8. POLICJA</option>
+                    <option value="9">9. MATRIX</option>
+                    <option value="10">10. BICIE SERCA</option>
+                </select>
+            </div>
+
+            <hr style="border-color: #333">
+            
+            <div class="control-group">
+                <label style="color: #ffaa00">PROTOKÓŁ SHOW OFF</label>
+                <p style="font-size: 12px; color: #888">Automatycznie animuje maskę w spoczynku.</p>
+                <button onclick="toggleShowOff()" id="btnShowOff" style="width: 100%">AKTYWUJ DEMO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GENERATOR KODU -->
+    <div class="panel" style="width: 100%; max-width: 1400px; margin-top: 20px;">
+        <h2>KONFIGURACJA RDZENIA <span>[ZAPIS]</span></h2>
+        <p>Skopiuj ten kod do <b>config.py</b>, aby trwale zapisać ustawienia JARVIS.</p>
+        <textarea id="codeOutput" readonly></textarea>
+        <button onclick="copyCode()">KOPIUJ DO SCHOWKA</button>
+    </div>
+
+    <script>
+        let port, writer;
+        let config = { 
+            S1_OPEN: 160, S1_CLOSE: 20, S2_OPEN: 20, S2_CLOSE: 160, 
+            SERVO_SPEED_DELAY: 0.01, LASER_DIST_LIMIT: 200, EYE_MAX_BRIGHT: 1.0,
+            SND_OPEN: "open.wav", SND_CLOSE: "close.wav", ANIMATION_MODE: 1,
+            SHOW_OFF_ENABLED: "False"
+        };
+
+        document.getElementById('connectBtn').addEventListener('click', async () => {
+            if ("serial" in navigator) {
+                try {
+                    port = await navigator.serial.requestPort();
+                    await port.open({ baudRate: 115200 });
+                    const textEncoder = new TextEncoderStream();
+                    textEncoder.readable.pipeTo(port.writable);
+                    writer = textEncoder.writable.getWriter();
+                    document.getElementById('status').innerText = "STATUS SYSTEMU: ONLINE - MARK 85 POŁĄCZONY";
+                    document.getElementById('status').style.color = "#00ffff";
+                    document.getElementById('connectBtn').style.display = 'none';
+                    sendJson({ cmd: "connect" });
+                    generateCode();
+                } catch (err) { console.error(err); alert("Błąd połączenia. Upewnij się, że maska jest podłączona."); }
+            } else { alert("Twoja przeglądarka nie obsługuje Web Serial API. Użyj Chrome lub Edge."); }
+        });
+
+        async function sendJson(data) { if (writer) await writer.write(JSON.stringify(data) + "\n"); }
+
+        function update(el) {
+            const val = el.value;
+            const key = el.id;
+            if(document.getElementById('val_' + key)) document.getElementById('val_' + key).innerText = val;
+            config[key] = val;
+            sendJson({ cmd: "set_config", key: key, value: val });
+            generateCode();
+        }
+
+        function toggleShowOff() {
+            const btn = document.getElementById('btnShowOff');
+            if (config.SHOW_OFF_ENABLED === "True") {
+                config.SHOW_OFF_ENABLED = "False";
+                btn.innerText = "AKTYWUJ DEMO";
+                btn.style.background = "rgba(0, 255, 255, 0.1)";
+            } else {
+                config.SHOW_OFF_ENABLED = "True";
+                btn.innerText = "DEZAKTYWUJ DEMO";
+                btn.style.background = "#ffaa00";
+                btn.style.color = "#000";
+            }
+            sendJson({ cmd: "set_config", key: "SHOW_OFF_ENABLED", value: config.SHOW_OFF_ENABLED === "True" }); // Send boolean
+            generateCode();
+        }
+
+        function playSound(file) { sendJson({ cmd: "play_sound", file: file }); }
+
+        function generateCode() {
+            let s = `# --- SKOPIUJ TO DO config.py ---\n`;
+            s += `S1_OPEN  = ${document.getElementById('S1_OPEN').value}\n`;
+            s += `S1_CLOSE = ${document.getElementById('S1_CLOSE').value}\n`;
+            s += `S2_OPEN  = ${document.getElementById('S2_OPEN').value}\n`;
+            s += `S2_CLOSE = ${document.getElementById('S2_CLOSE').value}\n\n`;
+            s += `SERVO_SPEED_DELAY = ${document.getElementById('SERVO_SPEED_DELAY').value}\n`;
+            s += `LASER_DIST_LIMIT  = ${document.getElementById('LASER_DIST_LIMIT').value}\n`;
+            s += `EYE_MAX_BRIGHT    = ${document.getElementById('EYE_MAX_BRIGHT').value}\n`;
+            s += `SND_OPEN  = "${document.getElementById('SND_OPEN').value}"\n`;
+            s += `SND_CLOSE = "${document.getElementById('SND_CLOSE').value}"\n`;
+            s += `ANIMATION_MODE = ${document.getElementById('ANIMATION_MODE').value}\n`;
+            s += `SHOW_OFF_ENABLED = ${config.SHOW_OFF_ENABLED}\n`;
+            document.getElementById('codeOutput').value = s;
+        }
+
+        function copyCode() {
+            const copyText = document.getElementById("codeOutput");
+            copyText.select();
+            document.execCommand("copy");
+            alert("Skopiowano! Teraz otwórz config.py i wklej.");
+        }
+        generateCode();
+    </script>
+</body>
+</html>
