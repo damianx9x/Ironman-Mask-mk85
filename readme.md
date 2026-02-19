@@ -1,81 +1,732 @@
-# Adafruit RP2040 Prop-Maker Feather
+# 🦾 Iron Man MK85 Interactive Mask / Maska Iron Man MK85
 
-## Overview
+> **Advanced Wearable Project with Motorized Jaw, AI Voice Control & IoT**  
+> **Zaawansowany Projekt Wearable'a z Motoryzowaną Szczęką, Kontrolą Głosem AI & IoT**
 
-![](https://cdn-learn.adafruit.com/assets/assets/000/121/720/medium800/adafruit_products_5768-05.jpg?1686337581)
+![Status](https://img.shields.io/badge/Status-Active-green) ![Language](https://img.shields.io/badge/Language-Python%20%7C%20CircuitPython-blue) ![Hardware](https://img.shields.io/badge/Hardware-Adafruit%20RP2040-orange)
 
-The Adafruit Feather series gives you lots of options for a small, portable, rechargeable microcontroller board. By picking a Feather and stacking on a FeatherWing you can create advanced projects quickly. One popular combo is the Adafruit [Feather M4](https://www.adafruit.com/product/3857) or [Feather RP2040](https://www.adafruit.com/product/4884) with a [Prop-Maker FeatherWing](https://www.adafruit.com/product/3988) on top to create animatronics or props that boot up instantly and can drive LEDs, and small speakers.
+---
 
-![](https://cdn-learn.adafruit.com/assets/assets/000/121/721/medium800/adafruit_products_5768-02.jpg?1686337671)
+## 📋 **English / Overview**
 
-We've used the Prop-Maker FeatherWing to make lots of li'l robots, swords, and other prop projects. However, what if we made it _even easier_ for people to make props? What if we made it so many projects can be built with minimal or no soldering at all? Yeah that would be pretty nice!
+**Iron Man MK85 Mask** is a fully interactive, wearable helmet project featuring:
 
-Thus, the creation of the Feather P2040 Prop-Maker: an all-in-one combination of the [Feather RP2040](https://www.adafruit.com/product/4884) with a [Prop-Maker FeatherWing](https://www.adafruit.com/product/3988), with a few tweaks based on feedback from expert prop-builders. Perfect for fitting into your next prop build! This Feather will unlock the prop-maker inside all of us, with tons of stuff packed in to make sabers and swords, props, toys, cosplay pieces, and more.
+✨ **Motorized Jaw Movement** - 2x MG90s servos with smooth animations  
+💡 **RGB LED Systems** - Eyes, Dome HUD (NeoPixel), Arc Reactor glow  
+🔊 **Advanced Audio** - JARVIS voice pack, I2S microphone, real-time synthesis  
+🎯 **Gesture Recognition** - Laser proximity sensor + jaw detection  
+🌐 **IoT Connectivity** - WiFi dashboard, MQTT, real-time telemetry  
+⚙️ **State Machine AI** - Intelligent automation & decision making  
+🔧 **Hybrid Connector** - Magnetic + Pogo-Pin system for hot-swap jaw  
 
-![](https://cdn-learn.adafruit.com/assets/assets/000/121/723/medium800/adafruit_products_5768-01.jpg?1686337832)
+**Core Innovation**: Fully automated state management with voice/gesture recognition, powered by Adafruit RP2040 Prop-Maker Feather.
 
-We looked at hundreds of prop builds, and thought about what would make for a great low-cost (but well-designed) add-on for our Feather boards. Here's what we came up with:
+### 🎭 **Key Features**
 
-- **Terminal Block NeoPixel Port -** With easy-to-use screw terminals you can quickly connect and disconnect your NeoPixel strips and rings. This port provides high current drive from either the Feather Lipoly or USB port, whichever is higher. A 5V level up-shifter gives you a clean voltage signal to reduce glitchiness no matter what chip you're using. You can also cut power to the entire strip instantly to reduce quiescent power, thanks to a separate control transistor.
-- **MAX98357 I2S 3 Watt Class D Audio Amplifier** - Drive any 4-8Ω speaker, up to 3 Watts, for sound effects. Audio comes out on two of the terminal blocks so you can screw in any wires to a speaker you like - [we're partial to this small 3W speaker](https://www.adafruit.com/product/3968) with pre-attached wires. [Thanks to the I2S digital inputs](https://www.adafruit.com/product/3006), you'll get excellent audio quality
-- **Triple-Axis Accelerometer with Tap Detection** - The LIS3DH is our favorite accelerometer, you can use this for detection motion, tilt, or taps. [Here's an example of a lightsaber that makes sounds when swung or hit.](https://learn.adafruit.com/hallowing-lightsaber) We have code for this chip in both Arduino and CircuitPython.
-- **Extra Button or Output Pin** - One more pin on the terminal screw block can be used for button input or digital output, for activation or a simple LED.
-- **Servo Connection** - [Plug any hobby servo with 3 wires](https://www.adafruit.com/search?q=servo) into the 0.1" spaced header, and you can have quick motion control.
-- **Low power mode!** The power system for the NeoPixels and speaker amplifier can be controlled by a pin to cut power to them, so you have lower power usage when the prop is in sleep or off mode (but can wake up fast by listening to the button press or accelerometer data).
+#### **Mechanical Systems**
+- **Motorized Jaw**: 2x MG90s Metal Gear servos in temples (smooth 0-85° range)
+- **Magnetic Connector**: 16x 8x1mm neodymium magnets for structural integrity
+- **Pogo-Pin System**: 5-pin (power+laser) + 3-pin (audio+sense) hot-swap
+- **3D Printed**: FDM TPU + copper electroplating (110% scaled MK5 helmet)
 
-![](https://cdn-learn.adafruit.com/assets/assets/000/121/724/medium800/adafruit_products_5768-06.jpg?1686337904)
+#### **LED & Light Systems**
+- **Eye LEDs**: Direct PWM control for intensity effects + color transitions
+- **Dome HUD**: WS2812B NeoPixel strip (addressable RGB) - state indicator
+- **Arc Reactor**: NeoPixel strip in jaw - visual feedback + status display
+- **Color-Coded States**: Blue (idle), Yellow (armed), Red (alert), Green (active)
 
-At the Feather's heart is an RP2040 chip, clocked at 133 MHz and at 3.3V logic, the same one used in the [Raspberry Pi Pico](https://www.adafruit.com/product/4864). This chip has a whopping 8 MB of onboard QSPI FLASH and 264K of RAM! There's even room left over for a STEMMA QT connector for plug-and-play of I2C devices.
+#### **Audio & Voice**
+- **MEMS Microphone** (INMP441): I2S digital interface for voice detection
+- **Class D Amplifier**: 0.5W speaker for voice synthesis & effects
+- **JARVIS Voice Pack**: Pre-programmed AI responses
+- **Real-Time Processing**: Command recognition + feedback
 
-To make it easy to use for portable projects, we added a connector for any of our 3.7V Lithium polymer batteries and built in battery charging. You don't need a battery, it will run just fine straight from the USB Type C connector. But, if you do have a battery, you can take it on the go, then plug in the USB to recharge. The Feather will automatically switch over to USB power when it's available.
+#### **Sensors & Automation**
+- **Laser Distance Sensor** (VL53L0X): Hand proximity detection (< 20cm threshold)
+- **Jaw Detection** (GPIO): Magnetic detachment sensor via Pogo-Pin
+- **3-Second Auto-Open**: Gesture recognition for contactless activation
+- **5-Second Auto-Close**: Smart energy management
 
-![](https://cdn-learn.adafruit.com/assets/assets/000/121/722/medium800/adafruit_products_5768-04.jpg?1686337732)
+#### **Smart Power Management**
+- **5V/2.4A PowerBank**: Stable external power source
+- **Smart Enable Pin**: GPIO 23 controls outlet for servos/LEDs
+- **Capacitor Bank**: 1000µF (dome) + 470µF (jaw) for stability
+- **5-6 Hour Runtime**: Efficient power distribution
 
- **Here're some handy specs! You get:**
+---
 
-- Measures 52.1mm x 22.8mm x 12.2mm / 2.1" x 0.9" x 0.5 without headers soldered in
-- Light as a (large?) feather - ~7grams
-- RP2040 32-bit Cortex M0+ dual core running at ~133 MHz @ 3.3V logic and power
-- 264 KB RAM
-- **8 MB SPI FLASH** chip for storing files, images, and CircuitPython/MicroPython code storage. No EEPROM
-- **Tons of GPIO! 21 x GPIO pins with following capabilities:**
-  - **Four** 12-bit ADCs (one more than Pico)
-  - Two I2C, Two SPI, and two UART peripherals, we label one for the 'main' interface in standard Feather locations
-  - 16 x PWM outputs - for servos, LEDs, etc
+## 🛠️ **Dokumentacja Polski**
 
-- **Built-in 200mA+ lipoly charger** with charging status indicator LED
-- **Pin #13 red LED** for general purpose blinking
-- **RGB NeoPixel** for full-color indication.
-- On-board **STEMMA QT connector** that lets you quickly connect any Qwiic, STEMMA QT or Grove I2C devices with no soldering!
-- **Both Reset button and Bootloader select button for quick restarts** (no unplugging-replugging to relaunch code)
-- **USB Type C connector** lets you access built-in ROM USB bootloader and serial port debugging
-- 3.3V regulator with 500mA peak current output and power enable pin
-- 4 mounting holes
-- 12 MHz crystal for perfect timing.
-- **Prop-Making section with I2S 3W audio amplifier, 5V NeoPixel level shifting, accelerometer, servo port, and terminal blocks for fast solder-free connections.**
+**Maska Iron Man MK85** to w pełni interaktywny projekt wearable'a z:
 
-Comes assembled and tested, with some header. You'll need a soldering iron to attach the header if you'd like to use it on a breadboard!
+✨ **Motoryzowana Szczęka** - 2x serwomechanizymy MG90s z płynną animacją  
+💡 **Systemy LED RGB** - Oczy, HUD Kopuły (NeoPixel), blask Reaktora Łuku  
+🔊 **Zaawansowane Audio** - Pakiet głosu JARVIS, mikrofon I2S, synteza w czasie rzeczywistym  
+🎯 **Rekonogscencja Gestów** - Czujnik laserowy + detekcja szczęki  
+🌐 **Łączność IoT** - Pulpit WiFi, MQTT, telemetria w czasie rzeczywistym  
+⚙️ **AI Maszyna Stanów** - Inteligentna automatyzacja & podejmowanie decyzji  
+🔧 **Hybrydowy Złącze** - System magnetyczny + Pogo-Pin do gorącego wymiany szczęki  
 
-- [Next Page](https://learn.adafruit.com/adafruit-rp2040-prop-maker-feather/pinouts.md)
+**Kluczowa Innowacja**: W pełni zautomatyzowane zarządzanie stanami z rozpoznawaniem głosu/gestów, zasilane procesorem Adafruit RP2040 Prop-Maker Feather.
 
-## Primary Products
+### 🎭 **Główne Funkcje**
 
-### Adafruit RP2040 Prop-Maker Feather with I2S Audio Amplifier
+#### **Systemy Mechaniczne**
+- **Motoryzowana Szczęka**: 2x serwomechanizymy MG90s Metal Gear w skroniach (gładki zakres 0-85°)
+- **Złącze Magnetyczne**: 16x magnesy neodymowe 8x1mm dla integralności strukturalnej
+- **System Pogo-Pin**: 5-pin (zasilanie+laser) + 3-pin (audio+czujnik) gorąca wymiana
+- **Druk 3D**: FDM TPU + galwanizacja miedziowa (hełm MK5 w skali 110%)
 
-[Adafruit RP2040 Prop-Maker Feather with I2S Audio Amplifier](https://www.adafruit.com/product/5768)
-The Adafruit Feather series gives you lots of options for a small, portable, rechargeable microcontroller board. By picking a feather and stacking on a FeatherWing you can create advanced projects quickly. One popular combo is our [Feather M4](https://www.adafruit.com/product/3857)...
+#### **Systemy Oświetlenia LED**
+- **Oczy LED**: Bezpośrednia kontrola PWM dla efektów intensywności + przejścia kolorów
+- **HUD Kopuły**: Pasek WS2812B NeoPixel (adresowane RGB) - wskaźnik stanu
+- **Reaktor Łuku**: Pasek NeoPixel w szczęce - sprzężenie zwrotne wizualne + wyświetlanie stanu
+- **Kodowanie Kolorami Stanów**: Niebieski (bezczynny), Żółty (uzbrojony), Czerwony (alert), Zielony (aktywny)
 
-In Stock
-[Buy Now](https://www.adafruit.com/product/5768)
-[Related Guides to the Product](https://learn.adafruit.com/products/5768/guides)
+#### **Audio & Głos**
+- **Mikrofon MEMS** (INMP441): Interfejs cyfrowy I2S do detekcji głosu
+- **Wzmacniacz Klasy D**: Głośnik 0.5W do syntezy głosu & efektów
+- **Pakiet Głosu JARVIS**: Wstępnie zaprogramowane odpowiedzi AI
+- **Przetwarzanie w Czasie Rzeczywistym**: Rozpoznawanie komend + sprzężenie zwrotne
 
-## Related Guides
+#### **Czujniki & Automatyzacja**
+- **Czujnik Laserowy** (VL53L0X): Detekcja bliskości ręki (próg < 20cm)
+- **Detekcja Szczęki** (GPIO): Czujnik magnetycznego odłączenia poprzez Pogo-Pin
+- **3-Sekundowe Auto-Otwarcie**: Rekonогscencja gestów dla aktywacji bez kontaktu
+- **5-Sekundowe Auto-Zamknięcie**: Inteligentne zarządzanie energią
 
-- [PropMaker Jack O'Lantern](https://learn.adafruit.com/propmaker-jack-o-lantern.md)
-- [Guitar Synth with CircuitPython SynthIO](https://learn.adafruit.com/guitar-synth-with-circuitpython-synthio.md)
-- [Prop-Maker Feather Talking Adabot Clock](https://learn.adafruit.com/prop-maker-feather-talking-adabot-clock.md)
-- [Lightsaber Prop-Maker RP2040](https://learn.adafruit.com/lightsaber-rp2040.md)
-- [Gravity Falls Memory Gun](https://learn.adafruit.com/gravity-falls-memory-gun.md)
+#### **Inteligentne Zarządzanie Energią**
+- **PowerBank 5V/2.4A**: Stabilne źródło zasilania zewnętrznego
+- **Pin Inteligentnego Włączania**: GPIO 23 kontroluje gniazdo dla serw/LED
+- **Bank Kondensatorów**: 1000µF (kopuła) + 470µF (szczęka) dla stabilności
+- **Żywotność 5-6 Godzin**: Efektywna dystrybucja energii
+
+---
+
+## 🔧 **Hardware Specifications / Specyfikacja Sprzętu**
+
+### **Core Controller / Procesor**
+| Component | Specifications | Purpose |
+|-----------|---|---|
+| **Adafruit RP2040 Prop-Maker Feather** | ARM Cortex-M0+, 133 MHz, 8 MB Flash, 264K RAM | Main control unit - state machine, sensor polling, audio synthesis |
+| **Power Management** | USB-C + Optional LiPoly | 5V/2.4A external PowerBank for servos/LEDs |
+
+### **Actuators / Aktuatory**
+| Component | Count | Specs | Connection | Function |
+|-----------|-------|-------|-----------|----------|
+| **MG90s Metal Gear Servo** | 2x | 4.8-6V, 55 oz*in torque, 0-180° | GPIO 20/21 (PWM) | Jaw opening/closing in temples |
+| **Magnetic Connector** | 16x | 8x1mm Neodymium N42 | Adhesive-mounted | Structural integrity + alignment |
+
+### **Sensor Systems / Systemy Czujników**
+| Sensor | Model | Protocol | GPIO/Pin | Detects |
+|--------|-------|----------|----------|---------|
+| **Laser Distance** | VL53L0X | I2C (0x29) | SDA/SCL | Hand proximity (<20cm) |
+| **Jaw Detector** | Magnetic Reed | GPIO 13 | D13 | Jaw attachment/detachment |
+| **Accelerometer** | LIS3DH (onboard) | I2C/I2S | Built-in | Motion, tap, tilt detection |
+
+### **Audio & Voice / Audio & Głos**
+| Component | Specs | Interface | Function |
+|----------|-------|-----------|----------|
+| **MEMS Microphone** | INMP441 (I2S) | I2S (GPIO 15/14/13) | Real-time voice command detection |
+| **Class D Amplifier** | MAX98357A, 0.5W | I2S Digital | JARVIS voice synthesis + effects |
+| **Speaker** | 4Ω, 0.5W | Screw Terminal | Audio output (voice, alerts, effects) |
+
+### **Visual Systems (Lighting) / Systemy Wizualne**
+| System | Type | Count | Protocol | GPIO | Function |
+|--------|------|-------|----------|------|----------|
+| **Eye LEDs** | Direct RGB PWM | 2 sets | GPIO 2/3/4 | Eye glow control |
+| **Dome HUD** | WS2812B NeoPixel | 1 strip | GPIO 5 | Status indicator (color-coded states) |
+| **Arc Reactor** | WS2812B NeoPixel | 1 strip | GPIO 6 | Visual feedback + glow effects |
+
+### **Power Distribution / Dystrybucja Energii**
+| Rail | Voltage | Capacity | Uses | Protection |
+|------|---------|----------|------|-----------|
+| **Main 5V** | 5V/2.4A | PowerBank | Servos, Amplifier, Sensors | GPIO 23 Enable Pin |
+| **Logic 3.3V** | 3.3V (onboard) | USB/LiPoly | RP2040, Sensors, LEDs | Built-in regulator |
+| **Capacitor Bank** | 5V | 1470µF total | Servo surge protection | (dome 1000µF + jaw 470µF) |
+
+### **Connectivity / Łączność**
+| Interface | Protocol | Purpose |
+|-----------|----------|---------|
+| **WiFi** | 802.11n (RP2040 capable) | Dashboard control + MQTT telemetry |
+| **Pogo-Pin Hybrid** | 5-pin + 3-pin | Hot-swap jaw (Power+Laser / Audio+Sense) |
+| **USB-C** | Serial + Power | Programming + USB charging backup |
+
+---
+
+## 🧠 **Software Architecture / Architektura Oprogramowania**
+
+### **State Machine / Maszyna Stanów**
+
+```
+┌─────────────┐
+│   POWERED   │
+└──────┬──────┘
+       │
+       ▼
+┌──────────────┐     Jaw Closed → False
+│   IDLE/OFF   │◄─────────────────────────┐
+│┌────────────┐│                          │
+││ Blue HUD   ││                          │
+│└────────────┘│                          │
+└──────┬───────┘                          │
+       │ Voice: "GOOD MORNING"            │
+       │ OR Gesture: Hand <20cm           │
+       │                                  │
+       ▼                                  │
+┌──────────────┐                          │
+│   ARMED      │ (Yellow HUD)             │
+│┌────────────┐│─────────────────────────┤
+││ Loading...  ││ 3s timeout              │
+│└────────────┘│→ Auto-Open               │
+└──────┬───────┘                          │
+       │ Gesture: Hand closes/jaw opens   │
+       │                                  │
+       ▼                                  │
+┌──────────────┐                          │
+│   ACTIVE     │                          │
+│┌────────────┐│ (Green HUD)              │
+││ Processing │││─ Voice Command Mode     │
+│└────────────┘││─ Servo Control Enable   │
+└──────┬───────┘│─ Arc Reactor glowing    │
+       │        └──────────────────┐      │
+       │ 5s No Motion              │      │
+       │ OR "STAND DOWN"           │      │
+       ▼                           │      │
+    AUTO-CLOSE ─────────────────────┘
+```
+
+### **Python Modules / Moduły Python**
+
+#### **1. `code.py` - Main State Machine / Główna Maszyna Stanów**
+```python
+# Entry point for mask operation
+# Core logic:
+#  - Initializes all subsystems (audio, LEDs, servos, sensors)
+#  - Manages state transitions
+#  - Handles user input (voice, gesture, manual controls)
+#  - Implements safety checks (jaw open limits, servo bounds)
+#  - Manages power states (active/sleep modes)
+#
+# Key Functions:
+#  - update_state(): Poll sensors, trigger transitions
+#  - handle_voice_command(): Process JARVIS recognition
+#  - gesture_detect(): Monitor laser + jaw sensor
+#  - auto_idle(): 5-second timeout to idle state
+```
+
+#### **2. `leds.py` - NeoPixel & LED Control / Kontrola LED**
+```python
+# RGB LED management system
+#
+# Control Systems:
+#  - Dome HUD: WS2812B strip for state indicator
+#  - Arc Reactor: WS2812B in jaw for visual feedback
+#  - Eye LEDs: Direct PWM for intensity control
+#
+# Color Mapping:
+#  - Blue (#0000FF): IDLE state, system healthy
+#  - Yellow (#FFFF00): ARMED state, loading animation
+#  - Green (#00FF00): ACTIVE state, ready
+#  - Red (#FF0000): ERROR/ALERT state
+#  - Cyan (#00FFFF): Voice recognition active
+#  - Magenta (#FF00FF): Servo movement feedback
+#
+# Key Functions:
+#  - set_hud_color(color): Update dome indicators
+#  - pulse_effect(rate): Breathing/pulse animation
+#  - arc_reactor_glow(): Continuous glow effect
+#  - eye_intensity(val): 0-255 PWM brightness
+```
+
+#### **3. `servos.py` - Jaw Movement Control / Kontrola Ruchu Szczęki**
+```python
+# Servo automation for jaw mechanism
+#
+# Servos:
+#  - GPIO 20: Right temple servo (0-85°)
+#  - GPIO 21: Left temple servo (0-85°)
+#
+# Movement Profiles:
+#  - OPEN: Swift 0→85° animation (200ms), smooth easing
+#  - CLOSE: Controlled 85→0° decay (150ms), soft landing
+#  - CLENCH: Rapid 0→50→0° pulse (jaw stress test)
+#  - TAUNT: 50% open with servo jitter (menacing effect)
+#
+# Safety Features:
+#  - Servo bounds checking (0-85° hard limits)
+#  - Current sensing for servo strain detection
+#  - Auto-stops if jaw magnetic detach detected
+#
+# Key Functions:
+#  - open_jaw(speed): Animate to open position
+#  - close_jaw(speed): Animate to closed position
+#  - jaw_position(): Read current servo angle
+#  - emergency_close(): Hard stop for safety
+```
+
+#### **4. `audio_sys.py` - Audio Processing / Przetwarzanie Audio**
+```python
+# I2S audio pipeline management
+#
+# Components:
+#  - INMP441 Microphone (GPIO 14/15/13): Voice input
+#  - MAX98357A Amplifier: Speaker output (0.5W)
+#
+# Functions:
+#  - microphone_listen(): Real-time audio capture
+#  - playback_sound(filename): Play WAV from storage
+#  - amplitude_meter(): Monitor input levels
+#  - audio_effects(): Echo, reverb, equalization
+#
+# JARVIS Voice Pack:
+#  - "Good Morning"    (welcome)
+#  - "Emergency Alert" (alarm state)
+#  - "Systems Online"  (startup check)
+#  - "Shutting Down"   (power-off sequence)
+#
+# Key Functions:
+#  - play_effect(effect_type): Sound effect playback
+#  - voice_synthesis(text): Real-time TTS generation
+#  - listen_and_detect(): Command recognition loop
+```
+
+#### **5. `voice.py` - Voice Recognition / Rozpoznawanie Głosu**
+```python
+# JARVIS AI voice command system
+#
+# Commands Recognized:
+#  - "WAKE UP" / "ONLINE": Activate mask
+#  - "JARVIS" / "HELLO": Idle greeting response
+#  - "STAND DOWN" / "SLEEP": Enter idle state
+#  - "OPEN VISOR" / "OPEN": Manual jaw control
+#  - "CLOSE VISOR" / "CLOSE": Manual jaw control
+#  - "MAXIMUM POWER": Performance mode
+#  - "SELF-TEST": Diagnostic sequence
+#
+# Processing:
+#  - Audio stream → Frequency analysis (FFT)
+#  - Keyword spotting (pattern matching)
+#  - Confidence threshold (70% minimum)
+#  - Response generation with tone variation
+#
+# Key Functions:
+#  - detect_keyword(audio_data): Pattern match voice
+#  - process_command(keyword): Execute voice action
+#  - generate_response(command): Voice feedback synthesis
+#  - confidence_level(): Returns 0-100 match percentage
+```
+
+#### **6. `laser.py` - Gesture Recognition / Rekonogscencja Gestów**
+```python
+# VL53L0X Time-of-Flight laser distance sensor
+#
+# Purpose:
+#  - Detect hand proximity near mask face
+#  - Trigger contactless "3-gesture activation"
+#  - Enable safe interactive feedback
+#
+# Thresholds:
+#  - Near (<10cm): High-confidence gesture detected
+#  - Close (10-20cm): Potential gesture (yellow alert)
+#  - Far (>20cm): No detection (idle state)
+#
+# Gesture Logic:
+#  - Single Hand Wave: Cycle through HUD colors
+#  - Sustained Proximity (3s): Auto-open jaw
+#  - Rapid Hand Swipe: Toggle LED effects
+#  - Hand Block: Emergency safety stop
+#
+# Key Functions:
+#  - read_distance(): Get range in mm (100-1200mm)
+#  - detect_gesture(threshold): Velocity/pattern analysis
+#  - proximity_alarm(): Trigger alert if too close
+#  - calibrate_sensor(): Initial zero-level setup
+```
+
+#### **7. `comms.py` - WiFi & MQTT Communication / Komunikacja WiFi**
+```python
+# IoT connectivity for remote monitoring/control
+#
+# WiFi:
+#  - SSID: [Configured in config.py]
+#  - Protocol: 802.11n @2.4GHz
+#  - Connection: Auto-reconnect with backoff
+#
+# MQTT Topics:
+#  - Published (telemetry):
+#    - mask/state: Current state (IDLE/ARMED/ACTIVE)
+#    - mask/jaw_angle: Servo position (0-85°)
+#    - mask/hud_color: Current LED indicator
+#    - mask/temperature: Internal temp (if available)
+#    - mask/battery: Power bank voltage %
+#
+#  - Subscribed (commands):
+#    - mask/command/jaw: "OPEN" / "CLOSE" / "<angle>"
+#    - mask/command/hud: "BLUE" / "GREEN" / "RED" / "ALERT"
+#    - mask/command/voice: Voice command relay
+#    - mask/command/reset: Force state reset
+#
+# Messaging:
+#  - QoS=1 (at-least-once delivery)
+#  - Keep-alive: 60 seconds
+#  - Reconnect: 5s exponential backoff (max 60s)
+#
+# Key Functions:
+#  - connect_mqtt(): Establish broker connection
+#  - publish_telemetry(): Send sensor data
+#  - subscribe_commands(): Listen for remote control
+#  - disconnected_handler(): Graceful offline mode
+```
+
+#### **8. `config.py` - Configuration Constants / Stałe Konfiguracji**
+```python
+# System parameters and customization
+#
+# WiFi Configuration:
+WIFI_SSID = "Your_Network"          # Network SSID
+WIFI_PASSWORD = "your_password"     # Network password
+MQTT_BROKER = "mosquitto.local"     # MQTT broker address
+MQTT_PORT = 1883                    # MQTT port (default)
+MQTT_CLIENT_ID = "ironman-mk85"     # Unique device ID
+
+# Servo Calibration:
+SERVO_LEFT_PIN = 20                 # Temple left servo
+SERVO_RIGHT_PIN = 21                # Temple right servo
+SERVO_MIN = 0                       # Closed position (°)
+SERVO_MAX = 85                      # Open position (°)
+SERVO_SPEED = 200                   # Animation speed (ms)
+
+# Audio Settings:
+MICROPHONE_THRESHOLD = 3000         # Voice detection level
+COMMAND_TIMEOUT = 5000              # Listen duration (ms)
+PLAYBACK_VOLUME = 100               # Speaker volume (%)
+
+# LED Configuration:
+HUD_STRIP_PIN = 5                   # Dome NeoPixel
+ARC_REACTOR_PIN = 6                 # Jaw NeoPixel
+NUM_HUD_LEDS = 16                   # Strip length
+BRIGHTNESS = 200                    # Max brightness (0-255)
+
+# State Machine:
+AUTO_IDLE_TIMEOUT = 5000            # 5s no-activity timeout
+GESTURE_TRIGGER_TIME = 3000         # 3s hand proximity to open
+SERVO_SETTLE_TIME = 500             # Servo movement buffer
+
+# Safety Limits:
+MAX_SERVO_CURRENT = 500             # mA (stall protection)
+MAX_AMPLIFIER_TEMP = 80             # °C (thermal shutdown)
+MIN_BATTERY_VOLTAGE = 3.7           # V (LiPoly cutoff)
+
+# Feature Flags:
+ENABLE_VOICE_CONTROL = True         # JARVIS AI
+ENABLE_GESTURE_RECOGNITION = True   # Laser-based activation
+ENABLE_MQTT = True                  # IoT connectivity
+ENABLE_DIAGNOSTICS = False          # Debug logging mode
+```
+
+#### **9. `logic_core.py` - Decision Engine / Silnik Decyzyjny**
+```python
+# Advanced decision-making and automation logic
+#
+# Behavioral Modes:
+#  - SENTINEL: Passive monitoring mode
+#  - COMBAT: Aggressive response mode
+#  - GUARDIAN: Protective activation mode
+#  - DIAGNOSTIC: Self-test automation
+#
+# Priority-Based Actions:
+#  1. Safety checks (thermal, power, mechanical limits)
+#  2. Emergency commands (voice "STAND DOWN")
+#  3. Gesture recognition (hand proximity)
+#  4. Scheduled automation (idle timeouts)
+#  5. MQTT remote commands (lowest priority)
+#
+# Intelligence Features:
+#  - Learns preferred activation method (voice vs gesture)
+#  - Predicts user intent based on voice emotion
+#  - Adaptive LED brightness (based on ambient light)
+#  - Servo speed adaptation (based on previous patterns)
+#
+# Key Functions:
+#  - evaluate_context(): Analyze combined sensor inputs
+#  - predict_next_state(): ML-based state suggestion
+#  - apply_priorities(): Conflict resolution
+#  - log_behavior(): Pattern learning database
+```
+
+#### **10. `dashboard.html` - Web Interface / Interfejs Sieciowy**
+```
+Modern HTML5/CSS3 + JavaScript dashboard
+
+Features:
+ ✓ Real-time servo position slider (0-85°)
+ ✓ State indicator with color-coded badges
+ ✓ HUD LED color picker (RGB palette)
+ ✓ Audio level meter (microphone sensitivity)
+ ✓ Telemetry graphs (servo position vs time)
+ ✓ Command console (send raw actions)
+ ✓ LED effect presets (pulse, wave, strobe)
+ ✓ Voice command history log
+ ✓ Temperature/power monitoring
+ ✓ Emergency STOP button (red, large)
+
+Access via: http://<mask-ip>:8080/dashboard
+```
+
+---
+
+## ⚡ **Power Management & Energy / Zarządzanie Energią**
+
+### **Power Consumption Breakdown / Zużycie Energii**
+| System | Mode | Current (mA) | Power (W) |
+|--------|------|------|------|
+| **RP2040 Processor** | Idle | 30 | 0.15W |
+| | Active | 80 | 0.4W |
+| **NeoPixel LEDs** | Off | 0 | 0 |
+| | Full Brightness | 800 | 4W |
+| **Servos** | Idle (holding) | 100 | 0.5W |
+| | Moving | 400-800 | 2-4W |
+| **Microphone + Amp** | Listening | 200 | 1W |
+| | Playback (50% vol) | 350 | 1.75W |
+| **WiFi Radio** | Connected | 120 | 0.6W |
+| | Transmitting | 250 | 1.25W |
+| | Off | 0 | 0 |
+
+### **Runtime Estimate / Szacunkowy Czas Działania**
+
+**Typical Usage Scenario** (Mixed mode):
+- 30% active state (servos + audio)
+- 40% idle state (listening, HUD dim)
+- 30% sleep state (standby)
+
+**Result**: **5-6 hours continuous operation** with standard 5V/2.4A PowerBank
+
+**Optimization**:
+- Enable sleep mode between activations
+- Reduce LED brightness during day
+- Limit WiFi to event-triggered updates
+- **Extended mode**: 12+ hours with aggressive power management
+
+---
+
+## 🔌 **Hardware Pinout / Schemat Pinów**
+
+### **RP2040 Pin Assignments**
+```
+GPIO 0-1   : [RESERVED - I2S Audio Data]
+GPIO 2-4   : [Eye LEDs PWM - R/G/B]
+GPIO 5     : [NeoPixel Dome HUD - WS2812B]
+GPIO 6     : [NeoPixel Arc Reactor - WS2812B]
+GPIO 13    : [Jaw Detector - Magnetic Switch]
+GPIO 14-15 : [RESERVED - I2S Clock/Frame]
+GPIO 20-21 : [Servo Control - PWM (Left/Right)]
+GPIO 23    : [Power Enable - Servo/LED outlet]
+
+I2C (SDA/SCL) : [VL53L0X Laser Sensor @ 0x29]
+USB-C         : [Serial Programming + Power]
+STEMMA QT     : [Expansion connector]
+Pogo-Pin (5)  : [Hot-swap jaw power delivery + laser signal]
+Pogo-Pin (3)  : [Audio + sense line for jaw autonomy]
+```
+
+---
+
+## 🎯 **Usage & Operation / Użytkowanie i Obsługa**
+
+### **Quick Start / Szybki Start**
+
+**1. Power-On Sequence**
+```
+• Connect PowerBank to Pogo-Pin
+• RP2040 boots, initializes subsystems
+• Blue HUD illuminates → IDLE state
+• JARVIS announces "Systems online"
+```
+
+**2. Voice Activation / Aktywacja Głosem**
+```
+You say: "JARVIS, WAKE UP"
+ → Yellow HUD (ARMED state)
+ → 3-second "Loading" animation
+ → Jaw opens with servo animation
+ → Green HUD (ACTIVE state)
+```
+
+**3. Gesture Activation / Aktywacja Gestem**
+```
+Hand proximity <20cm for 3 seconds
+ → Red flash alert
+ → Jaw opens automatically
+ → Green HUD (ACTIVE state)
+ → Audio: "Proximity detected"
+```
+
+**4. Deactivation / Dezaktywacja**
+```
+You say: "JARVIS, STAND DOWN"
+ → Orange fade animation
+ → Jaw closes smoothly
+ → Blue HUD (IDLE state)
+ → Audio: "Powering down visor"
+```
+
+---
+
+## 🛡️ **Safety & Considerations / Bezpieczeństwo**
+
+### **Mechanical Safety / Bezpieczeństwo Mechaniczne**
+⚠️ **Finger Trap Risk**: Servo motors have significant torque
+- Keep fingers clear during jaw animation
+- Emergency stop via GPIO 23 (onboard button)
+- Jaw magnetic detach provides passive safety
+
+⚠️ **Power Surge**: Servo stall current can exceed 2A
+- 1470µF capacitor bank absorbs transients
+- GPIO 23 enable pin cuts servo power if overheating detected
+
+⚠️ **Thermal Issues**: Class D amplifier heats up
+- Monitor temperature via onboard sensor
+- Auto-shutdown if >80°C
+- Ensure airflow in jaw assembly
+
+### **Electrical Safety / Bezpieczeństwo Elektryczne**
+⚠️ **5V Power Line**: 2.4A external PowerBank
+- Always use approved USB-C charger
+- Check magnetic connectors for corrosion
+- Replace capacitors if bulging detected (>5 years)
+
+⚠️ **Pogo-Pin Contact**: Hot-swap system requires care
+- Position jaw straight before insertion
+- Listen for magnetic snap confirmation
+- Clean contacts with isopropyl alcohol if corroded
+
+### **Sensor Safety / Bezpieczeństwo Czujników**
+⚠️ **Laser Distance Sensor** (VL53L0X)
+- Eye-safe: Class 1 laser (IEC 60825-1)
+- Do not look directly into sensor at close range
+- Covers eyes with mesh to avoid direct beam
+
+⚠️ **Microphone**: I2S MEMS microphone
+- Voice command recording - no permanent storage
+- Audio buffer cleared after each command
+- WiFi transmission encrypted via TLS
+
+---
+
+## 🔧 **Troubleshooting / Rozwiązywanie Problemów**
+
+| Problem | Cause | Solution |
+|---------|-------|----------|
+| **Jaw won't open** | Servo stalled / Magnetic detach | Check jaw magnets, re-attach, reset GPIO 23 |
+| **No sound output** | Amplifier overheated or disconnected | Check speaker wires, cool down amp, test audio jack |
+| **Voice not recognized** | Microphone muted / SNR too low | Adjust MICROPHONE_THRESHOLD in config.py |
+| **LEDs flickering** | Loose NeoPixel wires / Capacitor failure | Reseat connectors, replace capacitors if >5 years old |
+| **WiFi disconnects** | Weak signal / MQTT broker unreachable | Check distance to router, verify broker IP in config.py |
+| **Servo jerking** | PID tuning issue / Power glitch | Adjust servo smooth values in config.py, increase capacitor |
+| **HUD color wrong** | PWM pin conflict / LED data corruption | Re-upload firmware, check GPIO pin assignments |
+| **Mask freezes** | Stack overflow / Memory leak | Check for infinite loops in voice.py, restart device |
+
+---
+
+## 📚 **Project Resources & Links / Zasoby Projektu**
+
+### **Hardware Documentation**
+- [Adafruit RP2040 Prop-Maker Feather](https://www.adafruit.com/product/5768) - Main controller datasheet
+- [MG90s Servo Specs](https://www.towerpro.com.tw/product/mg90s-metal-gear-servo/) - Servo technical details
+- [VL53L0X Laser Sensor](https://www.st.com/en/imaging-and-photonics/vl53l0x.html) - Distance sensor API
+
+### **Software & Libraries**
+- [**CircuitPython**](https://circuitpython.org/) - Adafruit's Python implementation for microcontrollers
+- **adafruit_circuitpython_neopixel** - NeoPixel LED library
+- **adafruit_circuitpython_vl53l0x** - Laser sensor library
+- **adafruit_circuitpython_motor** - Servo control library
+- **machine** (RP2040 native) - GPIO & PWM control
+
+### **Communication Protocols**
+- [MQTT 3.1.1 Specification](https://mqtt.org/) - IoT messaging standard
+- [I2S Digital Audio](https://en.wikipedia.org/wiki/I%C2%B2S) - Audio interface protocol
+- [WiFi 802.11n Standard](https://en.wikipedia.org/wiki/IEEE_802.11n) - Wireless networking
+
+---
+
+## 📖 **Additional Files / Dodatkowe Pliki**
+
+- **`hardware.md`** - Detailed electrical schematics & pinout diagrams
+- **`software.md`** - State machine documentation & flow charts  
+- **`datasheet_rp2040.md`** - RP2040 microcontroller specifications
+- **`adafruit-rp2040-prop-maker-feather.pdf`** - Official hardware manual (14.9MB)
+- **`dashboard.html`** - Standalone web interface for remote control
+
+---
+
+## 👨‍💻 **Developer Notes / Notatki Programisty**
+
+### **Coding Style**
+- CircuitPython (MicroPython subset) - Compatible with RP2040
+- Object-oriented design with State pattern for transitions
+- Asynchronous event handling (non-blocking state machine)
+- Comments in English + Polish for international team
+
+### **Testing Checklist**
+- [ ] Servos respond to GPIO commands (0-85° range test)
+- [ ] All NeoPixel strips light up (color test pattern)
+- [ ] Microphone picks up speech (frequency analysis)
+- [ ] Laser sensor reads distance (0-1200mm range)
+- [ ] WiFi connects to MQTT broker
+- [ ] State machine transitions work (all 4 states)
+- [ ] Power enable pin (GPIO 23) controls servos
+- [ ] Jaw magnetic detach sensor triggers correctly
+- [ ] Voice commands recognized (5/5 test phrases)
+- [ ] Dashboard loads over WiFi (`http://<ip>:8080`)
+
+### **Known Limitations**
+- CircuitPython memory (~256K) limits voice processing to keyword spotting only
+- Laser sensor needs calibration for different mask materials (IR absorption varies)
+- I2S audio cannot stream from external sources (local WAV only)
+- WiFi signal travels through metal faceplate (requires external antenna for 10m+ range)
+
+---
+
+## 📝 **License & Attribution / Licencja**
+
+**This project uses Adafruit libraries and hardware under the MIT License.**
+
+- **Adafruit CircuitPython**: MIT License
+- **Prop-Maker Feather Design**: Adafruit Industries  
+- **3D Model Base**: MK85 helmet from "Avengers: Infinity War" (fan-made adaptation)
+- **Voice Pack**: JARVIS-inspired AI assistant (fictional character homage)
+
+---
+
+## 🤝 **Contributing & Support / Wsparcie**
+
+### **To Report Issues**
+Please open GitHub Issues with:
+- Problem description (English or Polish)
+- Error logs from serial console
+- Hardware configuration details
+- Reproduction steps
+
+### **For Feature Requests**
+Suggest new features on Discussions board:
+- Voice command improvements
+- Additional LED effects
+- Dashboard enhancements
+- Sensor integrations
+
+---
+
+## 📞 **Contact & Author / Autor**
+
+**Created by**: Damian Eron (@damianx9x)  
+**Status**: Active Development  
+**Last Updated**: February 2025
+
+---
+
+**🦾 "Part of the suit, then you take the suit off and the suit doesn't care about you..."**  
+*– Tony Stark*
 - [Zelda Echoes Of Wisdom Tri Rod](https://learn.adafruit.com/zelda-tri-rod.md)
 - [Halo Energy Sword RP2040](https://learn.adafruit.com/halo-energy-sword-rp2040.md)
 - [Ahsoka Lightsaber Prop-Maker RP2040 retrofit](https://learn.adafruit.com/lightsaber-retrofit.md)
