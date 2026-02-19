@@ -135,8 +135,6 @@ while True:
         is_open = True
         manual_open = True
 
-        if voice_mod: voice_mod.deactivate()
-
         # Reset czujników
         laser_detection_stack = 0
         laser_hold_start = 0
@@ -218,16 +216,7 @@ while True:
                     is_open = False
         last_laser_time = now
 
-    # --- KROK 5: MODULATOR GŁOSU ---
-    # Działa tylko gdy serwa stoją (żeby nie było zakłóceń)
-    if voice_mod and not jaw_detached:
-        if is_moving:
-            voice_mod.deactivate()
-        else:
-            voice_mod.activate()
-            voice_mod.update()
-
-    # --- KROK 6: EFEKTY ŚWIETLNE (LED) ---
+    # --- KROK 5: EFEKTY ŚWIETLNE (LED) ---
     if now - last_led_time > config.LED_UPDATE_DELAY:
         leds.update(now, is_moving, is_open, jaw_detached, current_dist, config.ANIMATION_MODE)
         last_led_time = now
