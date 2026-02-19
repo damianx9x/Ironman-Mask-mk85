@@ -14,7 +14,6 @@ import eyes
 import leds
 import audio_sys
 import laser
-import voice
 import ubieranie
 import comms # Nowy moduł komunikacji
 
@@ -40,8 +39,7 @@ btn = digitalio.DigitalInOut(config.PIN_BUTTON)
 btn.direction = digitalio.Direction.INPUT
 btn.pull = digitalio.Pull.UP
 
-# 3. Inicjalizacja modułów (Głos, Szczęka)
-voice_mod = voice.VoiceChanger(audio_sys.audio_out) if audio_sys.audio_out else None
+# 3. Inicjalizacja modułów (Szczęka)
 jaw_mon = ubieranie.JawMonitor(config.PIN_JAW_SENSE)
 
 # ==============================================================================

@@ -291,33 +291,7 @@
 #  - listen_and_detect(): Command recognition loop
 ```
 
-#### **5. `voice.py` - Voice Recognition / Rozpoznawanie Głosu**
-```python
-# JARVIS AI voice command system
-#
-# Commands Recognized:
-#  - "WAKE UP" / "ONLINE": Activate mask
-#  - "JARVIS" / "HELLO": Idle greeting response
-#  - "STAND DOWN" / "SLEEP": Enter idle state
-#  - "OPEN VISOR" / "OPEN": Manual jaw control
-#  - "CLOSE VISOR" / "CLOSE": Manual jaw control
-#  - "MAXIMUM POWER": Performance mode
-#  - "SELF-TEST": Diagnostic sequence
-#
-# Processing:
-#  - Audio stream → Frequency analysis (FFT)
-#  - Keyword spotting (pattern matching)
-#  - Confidence threshold (70% minimum)
-#  - Response generation with tone variation
-#
-# Key Functions:
-#  - detect_keyword(audio_data): Pattern match voice
-#  - process_command(keyword): Execute voice action
-#  - generate_response(command): Voice feedback synthesis
-#  - confidence_level(): Returns 0-100 match percentage
-```
-
-#### **6. `laser.py` - Gesture Recognition / Rekonogscencja Gestów**
+#### **5. `laser.py` - Gesture Recognition / Rekonogscencja Gestów**
 ```python
 # VL53L0X Time-of-Flight laser distance sensor
 #
@@ -344,7 +318,7 @@
 #  - calibrate_sensor(): Initial zero-level setup
 ```
 
-#### **7. `comms.py` - WiFi & MQTT Communication / Komunikacja WiFi**
+#### **6. `comms.py` - WiFi & MQTT Communication / Komunikacja WiFi**
 ```python
 # IoT connectivity for remote monitoring/control
 #
@@ -379,7 +353,7 @@
 #  - disconnected_handler(): Graceful offline mode
 ```
 
-#### **8. `config.py` - Configuration Constants / Stałe Konfiguracji**
+#### **7. `config.py` - Configuration Constants / Stałe Konfiguracji**
 ```python
 # System parameters and customization
 #
@@ -425,7 +399,7 @@ ENABLE_MQTT = True                  # IoT connectivity
 ENABLE_DIAGNOSTICS = False          # Debug logging mode
 ```
 
-#### **9. `logic_core.py` - Decision Engine / Silnik Decyzyjny**
+#### **8. `logic_core.py` - Decision Engine / Silnik Decyzyjny**
 ```python
 # Advanced decision-making and automation logic
 #
@@ -455,7 +429,7 @@ ENABLE_DIAGNOSTICS = False          # Debug logging mode
 #  - log_behavior(): Pattern learning database
 ```
 
-#### **10. `dashboard.html` - Web Interface / Interfejs Sieciowy**
+#### **9. `dashboard.html` - Web Interface / Interfejs Sieciowy**
 ```
 Modern HTML5/CSS3 + JavaScript dashboard
 
